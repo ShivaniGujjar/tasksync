@@ -72,14 +72,14 @@ const BoardPage = () => {
     if (!token) return;
     const config = { headers: { 'x-auth-token': token } };
     try {
-      const boardRes = await axios.get(`http://localhost:5001/api/boards/${boardId}`, config);
+      const boardRes = await axios.get(`https://tasksync-qkl8.onrender.com/api/boards/${boardId}`, config);
       setBoard(boardRes.data);
       dispatch(setBoardData(boardRes.data));
-      const listsRes = await axios.get(`http://localhost:5001/api/lists/${boardId}`, config);
+      const listsRes = await axios.get(`https://tasksync-qkl8.onrender.com/api/lists/${boardId}`, config);
       setLists(listsRes.data.sort((a, b) => a.position - b.position));
       const cardsData = {};
       for (const list of listsRes.data) {
-        const cardsRes = await axios.get(`http://localhost:5001/api/cards/${list._id}`, config);
+        const cardsRes = await axios.get(`https://tasksync-qkl8.onrender.com/api/cards/${list._id}`, config);
         cardsData[list._id] = cardsRes.data.map(card => ({...card, list: {title: list.title}}));
       }
       setCards(cardsData);
@@ -120,7 +120,7 @@ const BoardPage = () => {
     setCards({ ...cards, [sourceListId]: sourceCards, [destListId]: destCards });
     try { 
       const config = { headers: { 'x-auth-token': token } }; 
-      await axios.put(`http://localhost:5001/api/cards/${draggableId}/move`, { newListId: destListId }, config); 
+      await axios.put(`https://tasksync-qkl8.onrender.com/api/cards/${draggableId}/move`, { newListId: destListId }, config); 
     } catch (err) { 
       console.error('Failed to move card', err); 
     }
@@ -130,7 +130,7 @@ const BoardPage = () => {
   const handleSaveOrder = async () => { 
     try { 
       const config = { headers: { 'x-auth-token': token } }; 
-      await axios.put(`http://localhost:5001/api/lists/reorder`, { lists, boardId }, config); 
+      await axios.put(`https://tasksync-qkl8.onrender.com/api/lists/reorder`, { lists, boardId }, config); 
       setHasChanges(false); 
       alert('Order saved!'); 
     } catch (err) { 
@@ -139,8 +139,8 @@ const BoardPage = () => {
     } 
   };
   
-  const onListSubmit = async (e) => { e.preventDefault(); if(!listTitle.trim()) return; try { const config = { headers: { 'x-auth-token': token } }; const body = { title: listTitle, boardId: boardId }; const res = await axios.post('http://localhost:5001/api/lists', body, config); setLists([...lists, res.data]); setListTitle(''); setIsAddingList(false); } catch (err) { console.error('Failed to create list', err); } };
-  const onCardSubmit = async (e, listId) => { e.preventDefault(); const title = cardTitles[listId]; if (!title || !title.trim()) return; try { const config = { headers: { 'x-auth-token': token } }; const body = { title, listId, boardId }; const res = await axios.post(`http://localhost:5001/api/cards`, body, config); const list = lists.find(l => l._id === listId); setCards({ ...cards, [listId]: [...(cards[listId] || []), {...res.data, list: {title: list.title}}] }); setCardTitles({ ...cardTitles, [listId]: '' }); } catch (err) { console.error('Failed to create card', err); } };
+  const onListSubmit = async (e) => { e.preventDefault(); if(!listTitle.trim()) return; try { const config = { headers: { 'x-auth-token': token } }; const body = { title: listTitle, boardId: boardId }; const res = await axios.post('https://tasksync-qkl8.onrender.com/api/lists', body, config); setLists([...lists, res.data]); setListTitle(''); setIsAddingList(false); } catch (err) { console.error('Failed to create list', err); } };
+  const onCardSubmit = async (e, listId) => { e.preventDefault(); const title = cardTitles[listId]; if (!title || !title.trim()) return; try { const config = { headers: { 'x-auth-token': token } }; const body = { title, listId, boardId }; const res = await axios.post(`https://tasksync-qkl8.onrender.com/api/cards`, body, config); const list = lists.find(l => l._id === listId); setCards({ ...cards, [listId]: [...(cards[listId] || []), {...res.data, list: {title: list.title}}] }); setCardTitles({ ...cardTitles, [listId]: '' }); } catch (err) { console.error('Failed to create card', err); } };
   const handleCardTitleChange = (e, listId) => { setCardTitles({ ...cardTitles, [listId]: e.target.value }); };
   
   const onMemberSubmit = async (e) => {
@@ -148,7 +148,7 @@ const BoardPage = () => {
     if (!memberEmail.trim()) return;
     try {
       const config = { headers: { 'x-auth-token': token } };
-      const res = await axios.post(`http://localhost:5001/api/boards/${board._id}/members`, { email: memberEmail }, config);
+      const res = await axios.post(`https://tasksync-qkl8.onrender.com/api/boards/${board._id}/members`, { email: memberEmail }, config);
       setBoard(res.data);
       setMemberEmail('');
     } catch (err) {
@@ -159,7 +159,7 @@ const BoardPage = () => {
   const handleSettingsUpdate = async (updatedData) => {
     try {
       const config = { headers: { 'x-auth-token': token } };
-      const res = await axios.put(`http://localhost:5001/api/boards/${board._id}`, updatedData, config);
+      const res = await axios.put(`https://tasksync-qkl8.onrender.com/api/boards/${board._id}`, updatedData, config);
       setBoard(res.data);
       dispatch(setBoardData(res.data));
     } catch (err) {
@@ -169,16 +169,16 @@ const BoardPage = () => {
 
   const openModal = (card) => { setSelectedCard(card); setModalIsOpen(true); };
   const closeModal = () => { setModalIsOpen(false); setSelectedCard(null); };
-  const handleListDelete = async (listId) => { if (window.confirm('Are you sure?')) { try { const config = { headers: { 'x-auth-token': token } }; await axios.delete(`http://localhost:5001/api/lists/${listId}`, config); setLists((prevLists) => prevLists.filter((list) => list._id !== listId)); setCards((prevCards) => { const newCards = { ...prevCards }; delete newCards[listId]; return newCards; }); } catch (err) { console.error('Failed to delete list', err); } } };
-  const handleCardUpdate = async (cardId, updatedData) => { try { const config = { headers: { 'x-auth-token': token } }; const res = await axios.put(`http://localhost:5001/api/cards/${cardId}`, updatedData, config); const updatedCard = res.data; const listId = updatedCard.list; setCards(prevCards => ({ ...prevCards, [listId]: prevCards[listId].map(card => card._id === cardId ? { ...card, ...updatedCard, list: card.list } : card), })); } catch (err) { console.error('Failed to update card', err); } };
+  const handleListDelete = async (listId) => { if (window.confirm('Are you sure?')) { try { const config = { headers: { 'x-auth-token': token } }; await axios.delete(`https://tasksync-qkl8.onrender.com/api/lists/${listId}`, config); setLists((prevLists) => prevLists.filter((list) => list._id !== listId)); setCards((prevCards) => { const newCards = { ...prevCards }; delete newCards[listId]; return newCards; }); } catch (err) { console.error('Failed to delete list', err); } } };
+  const handleCardUpdate = async (cardId, updatedData) => { try { const config = { headers: { 'x-auth-token': token } }; const res = await axios.put(`https://tasksync-qkl8.onrender.com/api/cards/${cardId}`, updatedData, config); const updatedCard = res.data; const listId = updatedCard.list; setCards(prevCards => ({ ...prevCards, [listId]: prevCards[listId].map(card => card._id === cardId ? { ...card, ...updatedCard, list: card.list } : card), })); } catch (err) { console.error('Failed to update card', err); } };
   const startListEdit = (list) => { setEditingListId(list._id); setEditingListTitle(list.title); };
-  const handleListTitleUpdate = async (e, listId) => { e.preventDefault(); try { const config = { headers: { 'x-auth-token': token } }; const res = await axios.put(`http://localhost:5001/api/lists/${listId}`, { title: editingListTitle }, config); setLists(lists.map(list => list._id === listId ? res.data : list)); setEditingListId(null); } catch (err) { console.error('Failed to update list title', err); } };
+  const handleListTitleUpdate = async (e, listId) => { e.preventDefault(); try { const config = { headers: { 'x-auth-token': token } }; const res = await axios.put(`https://tasksync-qkl8.onrender.com/api/lists/${listId}`, { title: editingListTitle }, config); setLists(lists.map(list => list._id === listId ? res.data : list)); setEditingListId(null); } catch (err) { console.error('Failed to update list title', err); } };
   
   const handleRemoveMember = async (memberId) => {
     if (window.confirm('Are you sure you want to remove this member?')) {
       try {
         const config = { headers: { 'x-auth-token': token } };
-        const res = await axios.delete(`http://localhost:5001/api/boards/${board._id}/members/${memberId}`, config);
+        const res = await axios.delete(`https://tasksync-qkl8.onrender.com/api/boards/${board._id}/members/${memberId}`, config);
         setBoard(res.data);
         dispatch(setBoardData(res.data));
       } catch (err) {
@@ -190,7 +190,7 @@ const BoardPage = () => {
   const handleCardDelete = async (cardId) => {
     try {
       const config = { headers: { 'x-auth-token': token } };
-      const res = await axios.delete(`http://localhost:5001/api/cards/${cardId}`, config);
+      const res = await axios.delete(`https://tasksync-qkl8.onrender.com/api/cards/${cardId}`, config);
       const { listId } = res.data;
       setCards(prevCards => {
         const newCardsInList = prevCards[listId].filter(card => card._id !== cardId);

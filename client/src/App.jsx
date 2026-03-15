@@ -16,7 +16,7 @@ const App = () => {
 
     const loadUser = async () => {
       try {
-        const res = await axios.get('http://localhost:5001/api/auth');
+        const res = await axios.get('https://tasksync-qkl8.onrender.com/api/auth');
         dispatch(setUser(res.data));
       } catch (err) {
         dispatch(logout());

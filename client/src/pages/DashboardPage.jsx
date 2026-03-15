@@ -30,7 +30,7 @@ const DashboardPage = () => {
       try {
         setLoading(true);
         const config = { headers: { 'x-auth-token': token } };
-        const res = await axios.get('http://localhost:5001/api/dashboard', config);
+        const res = await axios.get('https://tasksync-qkl8.onrender.com/api/dashboard', config);
         setStats(res.data);
       } catch (err) {
         console.error('Failed to fetch dashboard data', err);
@@ -48,7 +48,7 @@ const DashboardPage = () => {
     try {
       const config = { headers: { 'x-auth-token': token } };
       const body = { title: newBoardTitle };
-      const res = await axios.post('http://localhost:5001/api/boards', body, config);
+      const res = await axios.post('https://tasksync-qkl8.onrender.com/api/boards', body, config);
       navigate(`/board/${res.data._id}`);
     } catch (err) { 
       console.error('Failed to create board', err);

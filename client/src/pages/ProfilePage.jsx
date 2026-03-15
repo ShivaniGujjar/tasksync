@@ -26,7 +26,7 @@ const ProfilePage = () => {
     setMessage('');
     try {
       const config = { headers: { 'x-auth-token': token } };
-      const res = await axios.put('http://localhost:5001/api/users/details', details, config);
+      const res = await axios.put('https://tasksync-qkl8.onrender.com/api/users/details', details, config);
       dispatch(setUser(res.data));
       setMessageType('success');
       setMessage('Profile details updated successfully!');
@@ -46,7 +46,7 @@ const ProfilePage = () => {
     }
     try {
       const config = { headers: { 'x-auth-token': token } };
-      const res = await axios.put('http://localhost:5001/api/users/password', {
+      const res = await axios.put('https://tasksync-qkl8.onrender.com/api/users/password', {
         currentPassword: passwords.currentPassword,
         newPassword: passwords.newPassword,
       }, config);

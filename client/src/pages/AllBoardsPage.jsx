@@ -16,7 +16,7 @@ import axios from 'axios';
     try {
       setLoading(true);
       const config = { headers: { 'x-auth-token': token } };
-      const res = await axios.get('http://localhost:5001/api/boards', config);
+      const res = await axios.get('https://tasksync-qkl8.onrender.com/api/boards', config);
       setBoards(res.data);
     } catch (err) {
       console.error('Failed to fetch all boards', err);
@@ -34,7 +34,7 @@ import axios from 'axios';
     if (window.confirm('Are you sure you want to permanently delete this board and all its contents?')) {
       try {
         const config = { headers: { 'x-auth-token': token } };
-        await axios.delete(`http://localhost:5001/api/boards/${boardIdToDelete}`, config);
+        await axios.delete(`https://tasksync-qkl8.onrender.com/api/boards/${boardIdToDelete}`, config);
         fetchAllBoards();
       } catch (err) {
         console.error('Failed to delete board', err);

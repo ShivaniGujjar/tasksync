@@ -15,10 +15,10 @@ const RegisterPage = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5001/api/auth/register', formData);
+      const res = await axios.post('https://tasksync-qkl8.onrender.com/api/auth/register', formData);
       dispatch(loginSuccess(res.data));
       const config = { headers: { 'x-auth-token': res.data.token } };
-      const userRes = await axios.get('http://localhost:5001/api/auth', config);
+      const userRes = await axios.get('https://tasksync-qkl8.onrender.com/api/auth', config);
       dispatch(setUser(userRes.data));
       navigate('/dashboard');
     } catch (err) {

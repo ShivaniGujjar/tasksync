@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e0e7ff; /* Light indigo background */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a5b4fc; /* A darker, subtle indigo */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #818cf8; /* Darker on hover */
+}

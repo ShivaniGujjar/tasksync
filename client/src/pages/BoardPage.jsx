@@ -7,6 +7,7 @@ import CardModal from '../components/CardModal';
 import BoardSettingsModal from '../components/BoardSettingsModal';
 import { EditIcon, DeleteIcon } from '../components/Icons';
 import { setBoardData, clearBoardData } from '../features/board/boardSlice';
+import Loader from '../components/Loader';
 
 const MemberAvatar = ({ name, onRemove, showRemoveButton }) => (
     <div className="relative group">
@@ -41,7 +42,7 @@ const formatDeadline = (deadline) => {
     text = `Due in ${diffDays} days`; bgColor = 'bg-yellow-300'; textColor = 'text-yellow-900'; iconColor = 'text-yellow-700';
   }
   return (
-    <div className={`mt-2 flex items-center text-sm font-semibold px-3 py-1.5 rounded-full shadow-md ${bgColor} ${textColor}`}>
+    <div className={`mt-2 w-full sm:w-fit flex items-center justify-center sm:justify-start text-sm font-semibold px-3 py-1.5 rounded-full shadow-md ${bgColor} ${textColor}`}>
       <svg className={`w-4 h-4 mr-1.5 ${iconColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
       {text}
     </div>
@@ -201,16 +202,16 @@ const BoardPage = () => {
     }
   };
 
-  if (!board || !user) return <div className="p-8">Loading...</div>;
+  if (!board || !user) return <div className="p-8"><Loader/></div>;
 
   return (
     <>
       <div style={{ backgroundColor: board.background }} className="p-4 md:p-8 min-h-screen">
         <div className="max-w-7xl mx-auto flex flex-col h-full">
-          <div className="flex justify-between items-center mb-6 pb-4 border-b border-gray-400">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 pb-4 border-b border-gray-400">
             <div>
-              <div className="flex items-center space-x-4">
-                <h1 className="text-3xl font-extrabold text-gray-900">{board.title}</h1>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                <h1 className="text-2xl font-extrabold text-gray-900">{board.title}</h1>
                 <div className="flex -space-x-3">
                   {board.user && <MemberAvatar name={board.user.name} showRemoveButton={false} />}
                   {board.members && board.members.map(member => (
@@ -226,11 +227,11 @@ const BoardPage = () => {
               {formatDeadline(board.deadline)} 
             </div>
             
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
               {hasChanges && (
                 <button 
                   onClick={handleSaveOrder} 
-                  className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg"
+                  className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg"
                 >
                   Save Order
                 </button>
@@ -238,8 +239,8 @@ const BoardPage = () => {
 
               {user && board.user && user._id === board.user._id && (
                 <>
-                  <form onSubmit={onMemberSubmit} className="flex">
-                    <input type="email" className="px-3 py-2 border rounded-md shadow-sm text-sm" placeholder="Invite by email" value={memberEmail} onChange={(e) => setMemberEmail(e.target.value)} required />
+                  <form onSubmit={onMemberSubmit} className="flex w-full sm:w-auto">
+                    <input type="email" className="w-full sm:w-auto px-3 py-2 border rounded-md shadow-sm text-sm" placeholder="Invite by email" value={memberEmail} onChange={(e) => setMemberEmail(e.target.value)} required />
                     <button type="submit" className="ml-2 px-4 py-2 border text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">+ Add</button>
                   </form>
                   <button onClick={() => setSettingsModalIsOpen(true)} className="px-4 py-2 border rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
@@ -252,11 +253,11 @@ const BoardPage = () => {
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="all-lists" direction="horizontal" type="list">
               {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef} className="flex items-stretch gap-6 overflow-x-auto pb-4 flex-grow scrollbar-hide">
+                <div {...provided.droppableProps} ref={provided.innerRef} className="flex flex-col sm:flex-row items-stretch gap-8 sm:gap-6 overflow-x-visible sm:overflow-x-auto pb-4 flex-grow scrollbar-hide">
                   {lists.map((list, index) => (
                     <Draggable key={list._id} draggableId={list._id} index={index}>
                       {(provided) => (
-                        <div {...provided.draggableProps} ref={provided.innerRef} className="bg-white rounded-xl shadow-sm w-80 flex-shrink-0 flex flex-col">
+                        <div {...provided.draggableProps} ref={provided.innerRef} className="bg-white rounded-xl shadow-sm w-full sm:w-80 flex-shrink-0 flex flex-col mb-2 sm:mb-0">
                           <div {...provided.dragHandleProps} className="relative flex justify-center items-center p-4 bg-indigo-600 rounded-t-xl">
                             <div className="w-full text-center">
                               {editingListId === list._id ? (
@@ -324,7 +325,7 @@ const BoardPage = () => {
                   ))}
                   {provided.placeholder}
                   
-                  <div className="w-80 flex-shrink-0">
+                  <div className="w-full sm:w-80 flex-shrink-0">
                     {isAddingList ? (
                       <div className="bg-white p-3 rounded-xl shadow-sm">
                         <form onSubmit={onListSubmit}>

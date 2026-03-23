@@ -131,7 +131,7 @@ const HomePage = () => {
       <footer className="bg-gray-800 text-white py-8">
           <div className="container mx-auto text-center">
               <p>&copy; 2025 Task Sync. All rights reserved.</p>
-              <p className="text-sm text-gray-400 mt-1">An MCA Major Project</p>
+              <p className="text-sm text-gray-400 mt-1">Developed by Shivani Gujjar</p>
           </div>
       </footer>
     </div>

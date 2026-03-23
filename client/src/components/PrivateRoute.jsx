@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
+import Loader from './Loader';
 
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated, loading } = useSelector((state) => state.auth);
@@ -10,7 +11,7 @@ const PrivateRoute = ({ children }) => {
   if (loading) {
     return (
       <div className="p-8 min-h-screen flex justify-center items-center">
-        <p className="text-lg text-gray-500">Authenticating...</p>
+        <p className="text-lg text-gray-500"><Loader/></p>
       </div>
     );
   }

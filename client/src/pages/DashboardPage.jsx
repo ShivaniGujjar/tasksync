@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import Loader from "../components/Loader";
 
 const StatCard = ({ title, value, iconComponent }) => (
   <div className="bg-white p-6 rounded-2xl shadow-sm flex items-center space-x-4 transition hover:shadow-lg hover:-translate-y-1">
@@ -55,7 +55,7 @@ const DashboardPage = () => {
     }
   };
 
-  if (loading) { return <div className="p-8 text-center text-gray-500">Loading Dashboard...</div>; }
+  if (loading) { return <div className="p-8 text-center text-gray-500"><Loader/></div>; }
   if (error) { return <div className="p-8 text-center text-red-500">{error}</div>; }
 
   return (

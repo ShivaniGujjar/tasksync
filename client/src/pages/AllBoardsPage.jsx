@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Loader from "../components/Loader";
 
   const AllBoardsPage = () => {
   const [boards, setBoards] = useState([]);
@@ -43,7 +44,7 @@ import axios from 'axios';
     }
   };
 
-  if (loading) { return <div className="p-8 text-center text-gray-500">Loading...</div>; }
+  if (loading) { return <div className="p-8 text-center text-gray-500"><Loader/></div>; }
   if (error) { return <div className="p-8 text-center text-red-500">{error}</div>; }
 
   return (

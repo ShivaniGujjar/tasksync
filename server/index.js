@@ -20,6 +20,11 @@ app.get('/', (req, res) => {
   res.send('API chal raha hai...');
 });
 
+
+app.get('/loaderio-74fb35eebdd1c77a43ff4d87ffca842b.txt', (req, res) => {
+  res.send('loaderio-74fb35eebdd1c77a43ff4d87ffca842b');
+});
+
 // API Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/boards', require('./routes/boards'));

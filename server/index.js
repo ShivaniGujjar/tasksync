@@ -4,6 +4,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const helmet = require('helmet');
 
 // Load environment variables
 dotenv.config();
@@ -14,6 +15,7 @@ const app = express();
 // Middlewares
 app.use(cors({ origin: '*' })); 
 app.use(express.json()); 
+app.use(helmet());
 
 // test route to check if the API is running
 app.get('/', (req, res) => {
